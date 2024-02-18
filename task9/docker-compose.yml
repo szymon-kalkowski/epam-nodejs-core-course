@@ -1,0 +1,22 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    container_name: epam-nodejs-mongo-auth-9
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+    command: --wiredTigerCacheSizeGB 0.25
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - JWT_SECRET=secret
+      - HOST=localhost
+      - PORT=8000
+      - DB=mongodb://mongo:27017/epam-nodejs-mongo-auth-9
+    depends_on:
+      - mongo
+    
